@@ -8,3 +8,6 @@ Done So Far-
 # Setted Up Daisy UI
 npm install tailwindcss@latest @tailwindcss/vite@latest daisyui@latest
 
+# Created Routes 
+# Created Header & Footer
+
