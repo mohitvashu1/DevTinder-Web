@@ -15,6 +15,9 @@ const Login = () => {
 
 const [emailId, setEmailId] = useState('divyatiwari@gmail.com');
 const [password, setPassword] = useState('Akshay@12345');
+  const [error, setError] = useState("");
+
+
 
 const dispatch =useDispatch();
  const navigate = useNavigate();
@@ -30,7 +33,8 @@ const handleLogin =async () =>{
      dispatch(addUser(res.data));
      return navigate("/");
   }catch (err) {
-    console.log("ERROR : " + err.message);
+    setError(err?.response?.data || "Something went wrong");
+
   }
   };
 
@@ -38,7 +42,7 @@ const handleLogin =async () =>{
 
   return (
 <div className='flex justify-center my-10'>
-  <div className="card bg-base-300 h-72 w-96 shadow-sm">
+  <div className="card bg-base-300 h-[300px] w-96 shadow-sm">
   <div className="card-body ">
     <h2 className="card-title justify-center">Sign-In!</h2>
     <div >
@@ -51,7 +55,7 @@ const handleLogin =async () =>{
   placeholder="Email-Id" className="input input-md" />
 </label>
  </div>
-<div className='my-7'>
+<div className=''>
   <label className="floating-label">
   <span>Your Password</span>
   <input type="text"
@@ -62,6 +66,8 @@ const handleLogin =async () =>{
 </label>
 </div>
     </div>
+    <p className="text-red-500 text-xs">{error}</p>
+
     <div className="card-actions justify-center ">
       <button className="btn btn-primary" onClick={handleLogin}>Login</button>
     </div>

@@ -34,7 +34,7 @@ const NavBar = () => {
   <div className="flex-1">
     <Link to="/" className="btn btn-ghost normal-case text-xl">
       <img
-        src="https://static.vecteezy.com/system/resources/previews/018/910/833/non_2x/tinder-app-logo-tinder-app-icon-free-free-vector.jpg"
+        src="https://tinder.com/static/tinder.png"
         alt="logo"
         className="w-10 h-10 mr-2"
       />
