@@ -1,8 +1,41 @@
-import React from 'react'
+import axios from 'axios'
+import React, { use } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { addFeed } from '../utils/feedSlice';
+import { useEffect } from 'react';
+import Userfeed from './userFeed';
+
+
+
+
 
 const feed = () => {
+
+const feed = useSelector((store) => store.feed);
+  const dispatch = useDispatch();
+
+  const getFeed = async () => {
+    if (feed) return;
+    try {
+      const res = await axios.get("http://localhost:3001/feed", {
+        withCredentials: true,
+      });
+      dispatch(addFeed(res?.data?.data));
+    } catch (err) {
+      //TODO: handle error
+    }
+  };
+
+  useEffect(() => {
+    getFeed();
+  }, []);
+
   return (
-    <div>feed</div>
+    feed && (
+      <div className="flex justify-center my-10">
+        <Userfeed user={feed[2]} />
+      </div>
+    )
   )
 }
 
