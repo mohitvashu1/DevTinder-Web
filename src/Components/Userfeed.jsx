@@ -1,6 +1,6 @@
 import React from 'react'
 
-const userFeed = ({user}) => {
+const UserFeed = ({user}) => {
 
 const { firstName, lastName, photoUrl, age, gender, about } = user;    
 
@@ -11,7 +11,7 @@ const { firstName, lastName, photoUrl, age, gender, about } = user;
       </figure>
       <div className="card-body">
         <h2 className="card-title">{firstName + " " + lastName}</h2>
-        {age && gender && <p>{age + ", " + gender}</p>}
+        {age && gender && <p className='card-title uppercase text-sm'>{age + ", " + gender}</p>}
         <p>{about}</p>
         <div className="card-actions justify-center my-4">
           <button className="btn btn-primary">Ignore</button>
@@ -22,4 +22,4 @@ const { firstName, lastName, photoUrl, age, gender, about } = user;
   );
 };
 
-export default userFeed
+export default UserFeed

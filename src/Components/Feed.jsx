@@ -3,7 +3,7 @@ import React, { use } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { addFeed } from '../utils/feedSlice';
 import { useEffect } from 'react';
-import Userfeed from './userFeed';
+import UserFeed from './userFeed';
 
 
 
@@ -33,7 +33,7 @@ const feed = useSelector((store) => store.feed);
   return (
     feed && (
       <div className="flex justify-center my-10">
-        <Userfeed user={feed[2]} />
+        <UserFeed user={feed[2]} />
       </div>
     )
   )
