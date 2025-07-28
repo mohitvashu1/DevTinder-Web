@@ -33,7 +33,7 @@ const feed = useSelector((store) => store.feed);
   return (
     feed && (
       <div className="flex justify-center my-10">
-        <UserFeed user={feed[2]} />
+        <UserFeed user={feed[1]} />
       </div>
     )
   )

@@ -10,6 +10,7 @@ const EditProfile = ({ user }) => {
   const [photoUrl, setPhotoUrl] = useState(user.photoUrl);
   const [age, setAge] = useState(user.age);
   const [gender, setGender] = useState(user.gender);
+  const [hobbies, setHobbies] = useState(user.hobbies);
   const [about, setAbout] = useState(user.about);
   const [error, setError] = useState("");
   const dispatch = useDispatch();
@@ -27,6 +28,7 @@ const EditProfile = ({ user }) => {
           photoUrl,
           age,
           gender,
+          hobbies,
           about,
         },
         { withCredentials: true }
@@ -106,6 +108,17 @@ const EditProfile = ({ user }) => {
                 </label>
                 <label className="form-control w-full max-w-xs my-2">
                   <div className="label">
+                    <span className="label-text">hobbies:</span>
+                  </div>
+                  <input
+                    type="text"
+                    value={hobbies}
+                    className="input input-bordered w-full max-w-xs"
+                    onChange={(e) => setHobbies(e.target.value)}
+                  />
+                </label>
+                <label className="form-control w-full max-w-xs my-2">
+                  <div className="label">
                     <span className="label-text">About:</span>
                   </div>
                   <input
@@ -126,7 +139,8 @@ const EditProfile = ({ user }) => {
           </div>
         </div>
         <UserFeed
-          user={{ firstName, lastName, photoUrl, age, gender, about }}
+        
+          user={{ firstName, lastName, photoUrl, age, gender, about, hobbies }}
         />
       </div>
       {showToast && (
