@@ -20,3 +20,11 @@ npm install tailwindcss@latest @tailwindcss/vite@latest daisyui@latest
 - Logined and seen my data is coming properly in the store
 - NavBar should update as soon as user logs in
 - Refactored our code to add constants file + create a components folder 
+- If token is not present, redirect user to login page
+- Build Logout Feature
+- Get the feed and add the feed in th store
+- Build the user card on feed
+- Build Edit Profile Feature
+- Show Toast Message on save of profile
+- New Page - See all my connections
+- New Page - See all my Conenction Requests

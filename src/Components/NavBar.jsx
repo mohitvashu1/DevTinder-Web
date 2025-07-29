@@ -67,6 +67,11 @@ const NavBar = () => {
           </Link>
         </li>
         <li>
+          <Link to='/request' className="justify-between">
+            Requests
+          </Link>
+        </li>
+        <li>
           <a onClick={handleLogout}>Logout</a></li>
       </ul>
     </div>
