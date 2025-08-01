@@ -41,49 +41,13 @@ const NavBar = () => {
       DevTINDER
     </Link>
   </div>
-  <ul className="menu bg-base-200 flex-1  lg:menu-horizontal rounded-box">
-  <li>
-    <a>
-      <Link to='/' className="flex items-center">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-5 w-5"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor">
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-      </svg>
-      Home</Link>
-      
-      
-    </a>
-  </li>
-  <li>
-    <a>
-      <Link to='/request'>
-      Request
-      <span className="badge badge-xs m-1 badge-warning">NEW</span>
-      </Link>
-    </a>
-  </li>
-  <li>
-    <a>
-      <Link to='/profile'>
-      My Profile
-      </Link>
-    </a>
-  </li>
-</ul>
+  
   {user &&(
-    <div className="flex text-xl gap-2">
+    <div className="flex text-xl ">
       <p className='my-1 '>Welcome , {user.firstName}</p>
     <div className="dropdown mx-10 dropdown-end ">
       <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-        <div className="w-14 h-14  rounded-lg">
+        <div className="rounded-full w-[50px] h-[50px]">
           <img
             alt="user photo"
             src={user.photoUrl} />
