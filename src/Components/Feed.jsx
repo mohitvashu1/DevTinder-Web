@@ -3,7 +3,7 @@ import React, { use } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { addFeed } from '../utils/feedSlice';
 import { useEffect } from 'react';
-import UserFeed from './userFeed';
+import UserFeed from './Userfeed';
 
 
 

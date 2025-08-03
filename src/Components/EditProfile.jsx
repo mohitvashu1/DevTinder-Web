@@ -1,5 +1,5 @@
 import { useState } from "react";
-import UserFeed from "./userFeed";
+import UserFeed from './Userfeed';
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice.js";
