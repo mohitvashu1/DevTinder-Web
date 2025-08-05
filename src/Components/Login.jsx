@@ -17,7 +17,7 @@ const Login = () => {
   const handleLogin = async () => {
     try {
       const res = await axios.post(
-      "http://localhost:3001/login",
+      "/api/login",
         {
           emailId,
           password,
@@ -34,7 +34,7 @@ const Login = () => {
   const handleSignUp = async () => {
     try {
       const res = await axios.post(
-       "http://localhost:3001/signup",
+       "/api/signup",
         { firstName, lastName, emailId, password },
         { withCredentials: true }
       );

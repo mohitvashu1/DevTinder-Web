@@ -12,7 +12,7 @@ const Userfeed = ({ user }) => {
   const handleSendRequest = async (status, userId) => {
     try {
       const res = await axios.post(
-        "http://localhost:3001/request/send/" + status + "/" + userId,
+        "/api/request/send/" + status + "/" + userId,
         {},
         { withCredentials: true }
       );

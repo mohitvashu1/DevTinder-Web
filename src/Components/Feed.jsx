@@ -17,7 +17,7 @@ const feed = useSelector((store) => store.feed);
   const getFeed = async () => {
     if (feed) return;
     try {
-      const res = await axios.get("http://localhost:3001/feed", {
+      const res = await axios.get("/api/feed", {
         withCredentials: true,
       });
       dispatch(addFeed(res?.data?.data));

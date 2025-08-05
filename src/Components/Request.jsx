@@ -10,7 +10,7 @@ const Requests = () => {
  const reviewRequest = async (status, _id) => {
     try {
       const res = axios.post(
-         "http://localhost:3001/request/review/" + status + "/" + _id,
+         "/api/request/review/" + status + "/" + _id,
         {},
         { withCredentials: true }
       );
@@ -20,7 +20,7 @@ const Requests = () => {
 
   const fetchRequests = async () => {
     try {
-      const res = await axios.get("http://localhost:3001/user/requests/received", {
+      const res = await axios.get("/api/user/requests/received", {
         withCredentials: true,
       });
 
