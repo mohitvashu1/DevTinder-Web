@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { removeUser } from '../utils/userSlice';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { BASE_URL } from '../utils/constants';
 
 
 const NavBar = () => {
@@ -16,7 +17,7 @@ const NavBar = () => {
   const handleLogout = async() =>{
     try{
       const res = await axios.post(
-        "/api/logout",
+        BASE_URL+"/logout",
         {},
         {
           withCredentials: true,
@@ -30,56 +31,59 @@ const NavBar = () => {
   }
 
   return (
-     <div className="navbar h-24   bg-base-200 shadow-sm">
-  <div className="flex-1">
-    <Link to="/" className="btn btn-ghost normal-case text-2xl">
-      <img
-        src="https://tinder.com/static/tinder.png"
-        alt="logo"
-        className="w-10 h-10 mr-2"
-      />
-      DevTINDER
-    </Link>
-  </div>
-  
-  {user &&(
-    <div className="flex text-xl ">
-      <p className='my-1 '>Welcome , {user.firstName}</p>
-    <div className="dropdown mx-10 dropdown-end ">
-      <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-        <div className="rounded-full w-[50px] h-[50px]">
+    <div className="navbar h-20 bg-base-200 shadow-sm px-2 sm:px-6">
+      <div className="flex-1">
+        <Link to="/" className="btn btn-ghost normal-case text-xl sm:text-2xl px-1 sm:px-2">
           <img
-            alt="user photo"
-            src={user.photoUrl} />
-        </div>
+            src="https://tinder.com/static/tinder.png"
+            alt="logo"
+            className="w-8 h-8 sm:w-10 sm:h-10 mr-2"
+          />
+          <span className="inline">DevTINDER</span>
+        </Link>
       </div>
-      <ul
-        tabIndex={0}
-        className="menu menu-md dropdown-content bg-base-100  rounded-box z-1 mt-3 w-52  p-2 shadow">
-        <li>
-          <Link to='/profile' className="justify-between">
-            Profile
-            <span className="badge">New</span>
-          </Link>
-        </li>
-         <li>
-          <Link to='/connections' className="justify-between">
-            Connections
-          </Link>
-        </li>
-        <li>
-          <Link to='/request' className="justify-between">
-            Requests
-          </Link>
-        </li>
-        <li>
-          <a onClick={handleLogout}>Logout</a></li>
-      </ul>
+
+      {user && (
+        <div className="flex items-center text-base sm:text-xl">
+          <p className="my-1 block mr-2">Welcome, {user.firstName}</p>
+          <div className="dropdown dropdown-end">
+            <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+              <div className="rounded-full w-10 h-10 sm:w-[50px] sm:h-[50px]">
+                <img
+                  alt="user photo"
+                  src={user.photoUrl}
+                />
+              </div>
+            </div>
+            <ul
+              tabIndex={0}
+              className="menu menu-md dropdown-content bg-base-100 rounded-box z-10 mt-3 w-40 sm:w-52 p-2 shadow"
+            >
+              <li>
+                <Link to='/profile' className="justify-between">
+                  Profile
+                  <span className="badge">New</span>
+                </Link>
+              </li>
+              <li>
+                <Link to='/connections' className="justify-between">
+                  Connections
+                </Link>
+              </li>
+              <li>
+                <Link to='/request' className="justify-between">
+                  Requests
+                </Link>
+              </li>
+              <li>
+                <a onClick={handleLogout}>Logout</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      )}
     </div>
-  </div>
-  )}
-</div>
   )
 }
 
-export default NavBar 
+export default NavBar;

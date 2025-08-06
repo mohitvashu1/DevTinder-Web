@@ -13,4 +13,4 @@ import EditProfile from './EditProfile'
   )
 }
 
-export default Profile
+export default Profile;

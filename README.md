@@ -84,3 +84,10 @@ npm install tailwindcss@latest @tailwindcss/vite@latest daisyui@latest
             proxy_set_header Host $host;
             proxy_cache_bypass $http_upgrade;
         }
+
+
+    location / {
+    try_files $uri /index.html;
+}location / {
+    try_files $uri /index.html;
+}
