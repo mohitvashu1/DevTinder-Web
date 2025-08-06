@@ -66,9 +66,7 @@ const EditProfile = ({ user }) => {
     <>
     
       <div className="flex flex-col items-center justify-center gap-6 my-6 px-2 sm:px-0">
-        <UserFeed
-          user={{ firstName, lastName, photoUrl, age, gender, about, hobbies }}
-        />
+        
         <div className="w-full max-w-md">
           <div className="card bg-base-300 w-full shadow-xl">
             <div className="card-body">
@@ -159,7 +157,9 @@ const EditProfile = ({ user }) => {
             </div>
           </div>
         </div>
-        
+        <UserFeed
+          user={{ firstName, lastName, photoUrl, age, gender, about, hobbies }}
+        />
       </div>
       {showToast && (
         <div className="toast toast-top toast-center">
