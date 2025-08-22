@@ -1,20 +1,24 @@
 import axios from "axios";  
 import { useEffect } from "react";
-import { connect, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addConnections } from "../utils/connectionSlice";
 import { BASE_URL } from "../utils/constants";
 
 const Connections = () => {
   const connections = useSelector((store) => store.connections);
   const dispatch = useDispatch();
+
   const fetchConnections = async () => {
     try {
-      const res = await axios.get( BASE_URL+"/user/connections", {
+      const res = await axios.get(BASE_URL + "/user/connections", {
         withCredentials: true,
       });
-      dispatch(addConnections(res.data.data));
+
+      // ✅ Filter out null or invalid connections
+      const validConnections = res.data.data.filter((c) => c);
+      dispatch(addConnections(validConnections));
     } catch (err) {
-      // Handle Error Case
+      console.error("Error fetching connections:", err);
     }
   };
 
@@ -22,15 +26,21 @@ const Connections = () => {
     fetchConnections();
   }, []);
 
-  if (!connections) return ;
+  if (!connections) return null;
 
-  if (connections.length === 0) return <h1> No Connections Found</h1>;
+  if (connections.length === 0)
+    return <h1 className="flex justify-center my-10">No Connections Found</h1>;
 
   return (
     <div className="text-center my-10">
-      <h1 className="font-bold text-white text-2xl sm:text-3xl mb-6">My Friends</h1>
+      <h1 className="font-bold text-white text-2xl sm:text-3xl mb-6">
+        My Friends
+      </h1>
 
       {connections.map((connection) => {
+        // ✅ safe guard
+        if (!connection) return null;
+
         const { _id, firstName, lastName, photoUrl, age, gender, about, hobbies } = connection;
 
         return (
@@ -49,8 +59,14 @@ const Connections = () => {
               <h2 className="font-bold text-lg sm:text-xl">
                 {firstName + " " + lastName}
               </h2>
-              {age && gender && <p className="uppercase text-xs sm:text-base">{age + ", " + gender}</p>}
-              <p className="font-bold text-sm sm:text-base">{hobbies}</p>
+              {age && gender && (
+                <p className="uppercase text-xs sm:text-base">
+                  {age + ", " + gender}
+                </p>
+              )}
+              {hobbies && (
+                <p className="font-bold text-sm sm:text-base">{hobbies}</p>
+              )}
               <p className="text-xs sm:text-base">{about}</p>
             </div>
           </div>
@@ -59,4 +75,5 @@ const Connections = () => {
     </div>
   );
 };
+
 export default Connections;

@@ -1,49 +1,68 @@
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { addRequests, removeRequest } from "../utils/requestSlice";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { BASE_URL } from "../utils/constants";
 
 const Requests = () => {
   const requests = useSelector((store) => store.requests);
   const dispatch = useDispatch();
-  
- const reviewRequest = async (status, _id) => {
+
+  const reviewRequest = async (status, _id) => {
     try {
-      const res = axios.post(
-         BASE_URL+"/request/review/" + status + "/" + _id,
+      await axios.post(
+        BASE_URL + "/request/review/" + status + "/" + _id,
         {},
         { withCredentials: true }
       );
       dispatch(removeRequest(_id));
-    } catch (err) {}
+    } catch (err) {
+      console.error("Error reviewing request:", err);
+    }
   };
 
   const fetchRequests = async () => {
     try {
-      const res = await axios.get(BASE_URL+"/user/requests/received", {
+      const res = await axios.get(BASE_URL + "/user/requests/received", {
         withCredentials: true,
       });
 
-      dispatch(addRequests(res.data.data));
-    } catch (err) {}
+      // filter out null users before saving
+      const validRequests = res.data.data.filter((r) => r.fromUserId);
+      dispatch(addRequests(validRequests));
+    } catch (err) {
+      console.error("Error fetching requests:", err);
+    }
   };
 
   useEffect(() => {
     fetchRequests();
   }, []);
 
-  if (!requests) return;
+  if (!requests) return null;
 
- if (requests.length === 0)
-    return <h1 className="flex justify-center my-10"> No Requests Found</h1>;
+  if (requests.length === 0)
+    return <h1 className="flex justify-center my-10">No Requests Found</h1>;
+
   return (
     <div className="text-center my-10">
-      <h1 className="text-bold text-white text-2xl sm:text-3xl mb-6">Friend Requests:</h1>
+      <h1 className="font-bold text-white text-2xl sm:text-3xl mb-6">
+        Friend Requests:
+      </h1>
 
       {requests.map((request) => {
-        const { _id, firstName, lastName, photoUrl, age, gender, about } =
-          request.fromUserId;
+        // ✅ safe check
+        if (!request?.fromUserId) return null;
+
+        const {
+          _id,
+          firstName,
+          lastName,
+          photoUrl,
+          age,
+          gender,
+          about,
+        } = request.fromUserId;
 
         return (
           <div
@@ -61,7 +80,11 @@ const Requests = () => {
               <h2 className="font-bold text-lg sm:text-xl">
                 {firstName + " " + lastName}
               </h2>
-              {age && gender && <p className="text-xs sm:text-base">{age + ", " + gender}</p>}
+              {age && gender && (
+                <p className="text-xs sm:text-base">
+                  {age + ", " + gender}
+                </p>
+              )}
               <p className="text-xs sm:text-base">{about}</p>
             </div>
             <div className="flex flex-row gap-2 mt-4 sm:mt-0 w-full sm:w-auto justify-center">
@@ -84,4 +107,5 @@ const Requests = () => {
     </div>
   );
 };
+
 export default Requests;
