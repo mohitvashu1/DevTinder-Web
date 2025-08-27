@@ -24,7 +24,7 @@ const Userfeed = ({ user }) => {
         <img
           src={user.photoUrl}
           alt="photo"
-          className="w-full h-64 sm:h-80 md:h-96 object-cover rounded-t-xl"
+          className="w-full h-64 sm:h-72 md:h-96 object-cover rounded-t-xl"
         />
       </figure>
       <div className="card-body p-4 sm:p-6">
@@ -34,16 +34,16 @@ const Userfeed = ({ user }) => {
         <p className="text-sm sm:text-base">{about}</p>
         <div className="card-actions flex flex-col sm:flex-row justify-center gap-2 my-4">
           <button
-            className="btn btn-primary w-full sm:w-auto"
-            onClick={() => handleSendRequest("ignored", _id)}
-          >
-            Ignore
-          </button>
-          <button
             className="btn btn-secondary w-full sm:w-auto"
             onClick={() => handleSendRequest("interested", _id)}
           >
             Interested
+          </button>
+          <button
+            className="btn btn-primary w-full sm:w-auto"
+            onClick={() => handleSendRequest("ignored", _id)}
+          >
+            Ignore
           </button>
         </div>
       </div>

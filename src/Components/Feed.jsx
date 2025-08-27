@@ -34,7 +34,10 @@ const feed = useSelector((store) => store.feed);
   if (!feed) return;
 
   if (feed.length <= 0)
-    return <h1 className="flex justify-center my-10">No new users founds!</h1>;
+    return <h1 className="text-center text-md sm:text-2xl font-semibold text-gray-300 my-10">
+   No new users found.   <br className="hidden sm:block" /> Please refresh the page.
+</h1>
+;
 
   return (
     feed && (

@@ -33,14 +33,14 @@ const NavBar = () => {
   return (
     <div className="navbar h-20 bg-base-200 shadow-sm px-2 sm:px-6">
       <div className="flex-1">
-        <Link to="/" className="btn btn-ghost normal-case text-xl sm:text-2xl px-1 sm:px-2">
+        <Link to={user ? "/" : "/login"} className="btn btn-ghost normal-case text-xl sm:text-2xl px-1 sm:px-2">
           <img
-            src="https://tinder.com/static/tinder.png"
+            src="https://i.ibb.co/TxDXkGJB/Screenshot-2025-08-27-190008.png"
             alt="logo"
-            className="w-8 h-8 sm:w-10 sm:h-10 mr-2"
+            className="h-12 sm:h-16 w-auto mr-2"
           />
-          <span className="inline">DevTINDER</span>
-        </Link>
+
+        </Link>  
       </div>
 
       {user && (
