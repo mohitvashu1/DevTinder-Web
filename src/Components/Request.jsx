@@ -27,7 +27,6 @@ const Requests = () => {
         withCredentials: true,
       });
 
-      // filter out null users before saving
       const validRequests = res.data.data.filter((r) => r.fromUserId);
       dispatch(addRequests(validRequests));
     } catch (err) {
@@ -42,16 +41,21 @@ const Requests = () => {
   if (!requests) return null;
 
   if (requests.length === 0)
-    return <h1 className="flex justify-center my-10">No Requests Found</h1>;
+    return (
+      <h1 className="flex justify-center my-10 text-gray-300">
+        No Requests Found
+      </h1>
+    );
 
   return (
-    <div className="text-center my-10">
-      <h1 className="font-bold text-white text-2xl sm:text-3xl mb-6">
-        Friend Requests:
+    <div className="text-center my-10 px-4">
+      {/* Gradient heading */}
+      <h1 className="relative font-bold text-2xl sm:text-3xl text-white mb-8 inline-block">
+        Friend Requests
+        <span className="absolute left-0 bottom-[-6px] w-full h-1 bg-gradient-to-r from-pink-500 to-orange-400 rounded-full" />
       </h1>
 
       {requests.map((request) => {
-        // ✅ safe check
         if (!request?.fromUserId) return null;
 
         const {
@@ -67,36 +71,68 @@ const Requests = () => {
         return (
           <div
             key={_id}
-            className="flex flex-col sm:flex-row justify-between items-center m-4 p-4 rounded-lg bg-base-300 w-full max-w-xs sm:max-w-2xl mx-auto"
+            className="
+              flex flex-col sm:flex-row items-center
+              m-4 p-4 gap-4
+              rounded-xl
+              bg-[#1e1f24]
+              hover:bg-[#25262c]
+              border border-gray-700
+              shadow-lg
+              transition-colors duration-200
+              w-full max-w-md sm:max-w-2xl mx-auto
+            "
           >
-            <div>
-              <img
-                alt="photo"
-                className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover mx-auto"
-                src={photoUrl}
-              />
-            </div>
-            <div className="text-center sm:text-left sm:mx-4 mt-4 sm:mt-0 w-full">
-              <h2 className="font-bold text-lg sm:text-xl">
+            {/* Avatar */}
+            <img
+              alt="photo"
+              className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover ring-2 ring-pink-500/40"
+              src={photoUrl}
+            />
+
+            {/* Info */}
+            <div className="flex-1 text-center sm:text-left">
+              <h2 className="font-bold text-lg sm:text-xl text-white">
                 {firstName + " " + lastName}
               </h2>
+
               {age && gender && (
-                <p className="text-xs sm:text-base">
+                <p className="uppercase text-gray-400 text-xs sm:text-sm">
                   {age + ", " + gender}
                 </p>
               )}
-              <p className="text-xs sm:text-base">{about}</p>
+
+              <p className="text-gray-300 text-xs sm:text-sm">{about}</p>
             </div>
-            <div className="flex flex-row gap-2 mt-4 sm:mt-0 w-full sm:w-auto justify-center">
+
+            {/* Action Buttons */}
+            <div className="flex gap-3">
               <button
-                className="px-4 py-1 rounded-full border border-gray-300 text-xs font-semibold text-gray-700 bg-white hover:bg-red-500 hover:text-white transition-all duration-150 shadow-sm"
                 onClick={() => reviewRequest("rejected", request._id)}
+                className="
+                  px-4 py-1 sm:px-5 sm:py-2
+                  rounded-full
+                  bg-gradient-to-r from-gray-600 to-gray-700
+                  text-white font-semibold text-sm
+                  hover:from-red-500 hover:to-red-600
+                  transition-all duration-200
+                  shadow-md
+                "
               >
                 Reject
               </button>
+
               <button
-                className="px-4 py-1 rounded-full border border-blue-500 text-xs font-semibold text-blue-600 bg-white hover:bg-blue-500 hover:text-white transition-all duration-150 shadow-sm"
                 onClick={() => reviewRequest("accepted", request._id)}
+                className="
+                  px-4 py-1 sm:px-5 sm:py-2
+                  rounded-full
+                  bg-gradient-to-r from-pink-500 to-orange-400
+                  text-white font-semibold text-sm
+                  hover:from-pink-400 hover:to-orange-300
+                  transition-all duration-200
+                  shadow-md
+                "
               >
                 Accept
               </button>
@@ -109,3 +145,4 @@ const Requests = () => {
 };
 
 export default Requests;
+  

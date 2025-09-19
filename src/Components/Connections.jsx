@@ -1,4 +1,4 @@
-import axios from "axios";  
+import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addConnections } from "../utils/connectionSlice";
@@ -13,8 +13,6 @@ const Connections = () => {
       const res = await axios.get(BASE_URL + "/user/connections", {
         withCredentials: true,
       });
-
-      // ✅ Filter out null or invalid connections
       const validConnections = res.data.data.filter((c) => c);
       dispatch(addConnections(validConnections));
     } catch (err) {
@@ -29,46 +27,96 @@ const Connections = () => {
   if (!connections) return null;
 
   if (connections.length === 0)
-    return <h1 className="flex justify-center my-10">No Connections Found</h1>;
+    return (
+      <h1 className="flex justify-center my-10 text-gray-300">
+        No Connections Found
+      </h1>
+    );
 
   return (
-    <div className="text-center my-10">
-      <h1 className="font-bold text-white text-2xl sm:text-3xl mb-6">
+    <div className="text-center my-10 px-4">
+      {/* Header with gradient underline */}
+      <h1 className="relative font-bold text-2xl sm:text-3xl text-white mb-8 inline-block">
         My Friends
+        <span className="absolute left-0 bottom-[-6px] w-full h-1 bg-gradient-to-r from-pink-500 to-orange-400 rounded-full" />
       </h1>
 
       {connections.map((connection) => {
-        // ✅ safe guard
         if (!connection) return null;
 
-        const { _id, firstName, lastName, photoUrl, age, gender, about, hobbies } = connection;
+        const {
+          _id,
+          firstName,
+          lastName,
+          photoUrl,
+          age,
+          gender,
+          about,
+          hobbies,
+        } = connection;
 
         return (
           <div
             key={_id}
-            className="flex flex-col sm:flex-row items-center m-4 p-4 rounded-lg bg-base-300 w-full max-w-xs sm:max-w-2xl mx-auto"
+            className="
+              flex flex-row items-center gap-4
+              m-4 p-4
+              rounded-xl
+              bg-[#1e1f24]
+              hover:bg-[#25262c]
+              border border-gray-700
+              shadow-lg
+              transition-colors duration-200
+              w-full max-w-md sm:max-w-[40%] mx-auto
+            "
           >
-            <div>
-              <img
-                alt="photo"
-                className="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover mx-auto"
-                src={photoUrl}
-              />
-            </div>
-            <div className="text-center sm:text-left sm:mx-4 mt-4 sm:mt-0 w-full">
-              <h2 className="font-bold text-lg sm:text-xl">
+            {/* Avatar */}
+            <img
+              alt="photo"
+              className="w-20 h-20 sm:w-28 sm:h-28 rounded-full object-cover ring-2 ring-pink-500/40"
+              src={photoUrl}
+            />
+
+            {/* Info */}
+            <div className="flex-1 text-left">
+              <h2 className="font-bold text-lg sm:text-xl text-white">
                 {firstName + " " + lastName}
               </h2>
+
               {age && gender && (
-                <p className="uppercase text-xs sm:text-base">
+                <p className="uppercase text-gray-400 text-xs sm:text-sm">
                   {age + ", " + gender}
                 </p>
               )}
+
               {hobbies && (
-                <p className="font-bold text-sm sm:text-base">{hobbies}</p>
+                <p className="font-semibold text-sm sm:text-base text-pink-400">
+                  {hobbies}
+                </p>
               )}
-              <p className="text-xs sm:text-base">{about}</p>
+
+              <p className="text-gray-300 text-xs sm:text-sm">{about}</p>
             </div>
+
+            {/* Chat Button */}
+            <button
+              className="
+                flex items-center justify-center
+                w-12 h-12 sm:w-14 sm:h-14
+                rounded-md
+                bg-gradient-to-r from-pink-500 to-orange-400
+                hover:from-pink-400 hover:to-orange-300
+                shadow-md
+                transition-all duration-200
+                focus:outline-none focus:ring-2 focus:ring-pink-400 focus:ring-offset-2 focus:ring-offset-[#1e1f24]
+              "
+            >
+              <img
+                src="https://i.ibb.co/21rVK1fs/images-1-removebg-preview.png"
+                alt="Chat"
+                className="w-6 h-6 sm:w-7 sm:h-7 object-contain filter brightness-0 invert"
+              />
+            </button>
           </div>
         );
       })}
