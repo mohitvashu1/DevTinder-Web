@@ -32,13 +32,12 @@ const Userfeed = ({ user }) => {
         overflow-hidden
         transition-colors duration-200
         w-full
-        max-w-[18rem]     /* ~288px on phones */
-        sm:max-w-[20rem]  /* ~320px on small tablets */
-        md:max-w-[22rem]  /* ~352px on desktops */
+        max-w-[18rem]
+        sm:max-w-[20rem]
+        md:max-w-[22rem]
         mx-auto
       "
     >
-      {/* Image */}
       <figure>
         <img
           src={photoUrl}
@@ -47,7 +46,6 @@ const Userfeed = ({ user }) => {
         />
       </figure>
 
-      {/* Content */}
       <div className="p-4 sm:p-5 text-center">
         <h2 className="text-base sm:text-lg md:text-xl font-bold text-white mb-1">
           {firstName + " " + lastName}
@@ -67,9 +65,8 @@ const Userfeed = ({ user }) => {
 
         <p className="text-gray-300 text-xs sm:text-sm mb-3">{about}</p>
 
-        {/* Actions */}
         <div className="flex flex-col sm:flex-row justify-center gap-2">
-
+          {/* Ignore Button */}
           <button
             onClick={() => handleSendRequest("ignored", _id)}
             className="
@@ -80,12 +77,14 @@ const Userfeed = ({ user }) => {
               hover:from-red-500 hover:to-red-600
               transition-all duration-200
               shadow-md
-              focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-[#1e1f24]
+              focus:outline-none
+              active:ring-2 active:ring-gray-500 active:ring-offset-2 active:ring-offset-[#1e1f24]
             "
           >
             Ignore
           </button>
-          
+
+          {/* Interested Button */}
           <button
             onClick={() => handleSendRequest("interested", _id)}
             className="
@@ -96,7 +95,8 @@ const Userfeed = ({ user }) => {
               hover:from-pink-400 hover:to-orange-300
               transition-all duration-200
               shadow-md
-              focus:outline-none focus:ring-2 focus:ring-pink-400 focus:ring-offset-2 focus:ring-offset-[#1e1f24]
+              focus:outline-none
+              active:ring-2 active:ring-pink-400 active:ring-offset-2 active:ring-offset-[#1e1f24]
             "
           >
             Interested
