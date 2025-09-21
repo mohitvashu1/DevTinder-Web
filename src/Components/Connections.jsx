@@ -3,7 +3,8 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addConnections } from "../utils/connectionSlice";
 import { BASE_URL } from "../utils/constants";
-
+import { Link } from "react-router-dom";
+import Chat from "./Chat";
 const Connections = () => {
   const connections = useSelector((store) => store.connections);
   const dispatch = useDispatch();
@@ -99,7 +100,9 @@ const Connections = () => {
             </div>
 
             {/* Chat Button */}
-            <button
+            <div>
+              <Link to={"/chat/"+_id}>
+              <button
               className="
                 flex items-center justify-center
                 w-12 h-12 sm:w-14 sm:h-14
@@ -111,12 +114,17 @@ const Connections = () => {
                 focus:outline-none focus:ring-2 focus:ring-pink-400 focus:ring-offset-2 focus:ring-offset-[#1e1f24]
               "
             >
+              
               <img
                 src="https://i.ibb.co/21rVK1fs/images-1-removebg-preview.png"
                 alt="Chat"
                 className="w-6 h-6 sm:w-7 sm:h-7 object-contain filter brightness-0 invert"
+                
               />
+              
             </button>
+            </Link>
+            </div>
           </div>
         );
       })}
