@@ -57,7 +57,7 @@ const EditProfile = ({ user }) => {
         className="
           flex flex-col md:flex-row
           justify-center
-          md:items-stretch       /* stretch children to equal height on desktop */
+          md:items-stretch       
           gap-8
           my-8 px-3
         "
