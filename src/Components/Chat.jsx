@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { createSocketConnection } from "../utils/socket";
 import { useSelector } from "react-redux";
@@ -9,6 +9,8 @@ const Chat = () => {
   const { targetUserId } = useParams();
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  const socketRef = useRef(null);
+
   const user = useSelector((store) => store.user);
   const userId = user?._id;
 
@@ -17,90 +19,133 @@ const Chat = () => {
       withCredentials: true,
     });
 
-    console.log(chat.data.messages);
-
     const chatMessages = chat?.data?.messages.map((msg) => {
       const { senderId, text } = msg;
       return {
         firstName: senderId?.firstName,
         lastName: senderId?.lastName,
+        photoUrl: senderId?.photoUrl,
         text,
       };
     });
+
     setMessages(chatMessages);
   };
-  useEffect(() => {
-    fetchChatMessages();
-  }, []);
 
   useEffect(() => {
-    if (!userId) {
-      return;
-    }
+    fetchChatMessages();
+  }, [targetUserId]);
+
+  useEffect(() => {
+    if (!userId) return;
+
     const socket = createSocketConnection();
-    // As soon as the page loaded, the socket connection is made and joinChat event is emitted
+    socketRef.current = socket;
+
     socket.emit("joinChat", {
       firstName: user.firstName,
       userId,
       targetUserId,
     });
 
-    socket.on("messageReceived", ({ firstName, lastName, text }) => {
-      console.log(firstName + " :  " + text);
-      setMessages((messages) => [...messages, { firstName, lastName, text }]);
+    socket.on("messageReceived", ({ firstName, lastName, text, photoUrl }) => {
+      setMessages((messages) => [
+        ...messages,
+        { firstName, lastName, text, photoUrl },
+      ]);
     });
 
-    return () => {
-      socket.disconnect();
-    };
+    return () => socket.disconnect();
   }, [userId, targetUserId]);
 
   const sendMessage = () => {
-    const socket = createSocketConnection();
-    socket.emit("sendMessage", {
+    if (!newMessage.trim()) return;
+
+    socketRef.current.emit("sendMessage", {
       firstName: user.firstName,
       lastName: user.lastName,
+      photoUrl: user.photoUrl, // ⭐ IMPORTANT
       userId,
       targetUserId,
       text: newMessage,
     });
+
     setNewMessage("");
   };
 
   return (
-    <div className="w-3/4 mx-auto border border-gray-600 m-5 h-[70vh] flex flex-col">
-      <h1 className="p-5 border-b border-gray-600">Chat</h1>
-      <div className="flex-1 overflow-scroll p-5">
+    <div className="w-full md:w-3/4 mx-auto my-6 h-[80vh] flex flex-col border border-gray-700 bg-[#1e1f24] rounded-xl shadow-lg">
+      <h1 className="p-5 border-b border-gray-700 bg-[#25262c] rounded-t-xl text-xl font-semibold text-gray-100">
+        Chat
+      </h1>
+
+      <div className="flex-1 overflow-y-auto p-5 space-y-5">
         {messages.map((msg, index) => {
+          const isOwn = msg.firstName === user.firstName;
+
           return (
             <div
               key={index}
-              className={
-                "chat " +
-                (user.firstName === msg.firstName ? "chat-end" : "chat-start")
-              }
+              className={`flex items-end gap-3 ${
+                isOwn ? "justify-end" : "justify-start"
+              }`}
             >
-              <div className="chat-header">
-                {`${msg.firstName}  ${msg.lastName}`}
-                <time className="text-xs opacity-50"> 2 hours ago</time>
+              {!isOwn &&
+                (msg.photoUrl ? (
+                  <img
+                    src={msg.photoUrl}
+                    className="w-8 h-8 rounded-full object-cover"
+                    alt="dp"
+                  />
+                ) : (
+                  <div className="w-8 h-8 rounded-full bg-gray-700" />
+                ))}
+
+              <div
+                className={`max-w-[70%] px-4 py-3 rounded-2xl text-sm sm:text-base shadow ${
+                  isOwn
+                    ? "bg-gradient-to-r from-pink-500 to-orange-400 text-white"
+                    : "bg-gray-700 text-gray-100"
+                }`}
+              >
+                <div className="text-xs mb-1 opacity-70">
+                  {msg.firstName} {msg.lastName}
+                </div>
+                {msg.text}
               </div>
-              <div className="chat-bubble">{msg.text}</div>
-              <div className="chat-footer opacity-50">Seen</div>
+
+              {isOwn &&
+                (msg.photoUrl ? (
+                  <img
+                    src={msg.photoUrl}
+                    className="w-8 h-8 rounded-full object-cover"
+                    alt="dp"
+                  />
+                ) : (
+                  <div className="w-8 h-8 rounded-full bg-gray-700" />
+                ))}
             </div>
           );
         })}
       </div>
-      <div className="p-5 border-t border-gray-600 flex items-center gap-2">
+
+      <div className="p-4 border-t border-gray-700 bg-[#25262c] rounded-b-xl flex items-center gap-3">
         <input
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
-          className="flex-1 border border-gray-500 text-white rounded p-2"
-        ></input>
-        <button onClick={sendMessage} className="btn btn-secondary">
+          placeholder="Type your message..."
+          className="flex-1 bg-gray-800 border border-gray-600 text-gray-200 px-4 py-2 rounded-lg focus:ring-2 focus:ring-pink-500 focus:outline-none"
+        />
+
+        <button
+          onClick={sendMessage}
+          className="px-6 py-2 rounded-full bg-gradient-to-r from-pink-500 to-orange-400 text-white font-semibold hover:from-pink-400 hover:to-orange-300 transition-all duration-200 shadow-md"
+        >
           Send
         </button>
       </div>
     </div>
   );
 };
+
 export default Chat;
