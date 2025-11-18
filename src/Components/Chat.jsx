@@ -10,6 +10,7 @@ const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const socketRef = useRef(null);
+  const bottomRef = useRef(null);
 
   const user = useSelector((store) => store.user);
   const userId = user?._id;
@@ -44,6 +45,8 @@ const Chat = () => {
 
     socket.emit("joinChat", {
       firstName: user.firstName,
+      lastName: user.lastName,
+      photoUrl: user.photoUrl,
       userId,
       targetUserId,
     });
@@ -58,13 +61,17 @@ const Chat = () => {
     return () => socket.disconnect();
   }, [userId, targetUserId]);
 
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
   const sendMessage = () => {
     if (!newMessage.trim()) return;
 
     socketRef.current.emit("sendMessage", {
       firstName: user.firstName,
       lastName: user.lastName,
-      photoUrl: user.photoUrl, // ⭐ IMPORTANT
+      photoUrl: user.photoUrl,
       userId,
       targetUserId,
       text: newMessage,
@@ -127,6 +134,8 @@ const Chat = () => {
             </div>
           );
         })}
+
+        <div ref={bottomRef}></div>
       </div>
 
       <div className="p-4 border-t border-gray-700 bg-[#25262c] rounded-b-xl flex items-center gap-3">
